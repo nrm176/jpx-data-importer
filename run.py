@@ -12,7 +12,7 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 if not ON_HEROKU:
     dotenv_path = join(dirname(__file__), '.env')
     load_dotenv(dotenv_path)
-    DATABASE_URL = 'postgresql://@localhost:5432/kabu_db'
+    DATABASE_URL = 'postgresql://@localhost:5432/kabudb'
 DB_ENGINE = create_engine(DATABASE_URL)
 
 file_path = '/tmp/%s_%s.xls' if ON_HEROKU else './%s_%s.xls'
