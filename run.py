@@ -46,6 +46,7 @@ download_xls(TARGET_URL)
 df = pd.read_excel(file_path % (TODAY, 'JPX'), sheet_name='Sheet1', skiprows=0)
 df.rename(columns=COLUMN_RULE, inplace=True)
 df['id'] = df['code']
+df['updated_at']=datetime.now()
 df.set_index('id', inplace=True)
 
 df.to_sql('jpx2', DB_ENGINE, if_exists='replace')
