@@ -5,11 +5,6 @@ import pandas as pd
 from sqlalchemy import create_engine
 from os.path import join, dirname
 from dotenv import load_dotenv
-import logging
-import sys
-
-logging.basicConfig(stream = sys.stdout)
-logger = logging.getLogger()
 
 ON_HEROKU = os.environ.get("ON_HEROKU", False)
 
@@ -31,7 +26,7 @@ def download_xls(url):
     res = requests.get(url)
     if res.status_code == 200:
         open(file_path % (TODAY, 'JPX'), 'wb').write(res.content)
-        logger.info('Done downloading an excel file')
+        print('Done downloading an excel file')
 
 
 COLUMN_RULE = {
@@ -56,6 +51,6 @@ df['updated_at']=datetime.now()
 df.set_index('id', inplace=True)
 try:
     df.to_sql('jpx2', DB_ENGINE, if_exists='replace')
-    logger.info('successfully stored data into jpx2 table')
+    print('successfully stored data into jpx2 table')
 except Exception as e:
-    logger.error("error", exc_info=True)
+    print("error", exc_info=True)
