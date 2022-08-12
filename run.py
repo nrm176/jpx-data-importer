@@ -5,6 +5,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from os.path import join, dirname
 from dotenv import load_dotenv
+import logging
 
 ON_HEROKU = os.environ.get("ON_HEROKU", False)
 
@@ -25,7 +26,7 @@ def download_xls(url):
     res = requests.get(url)
     if res.status_code == 200:
         open(file_path % (TODAY, 'JPX'), 'wb').write(res.content)
-        print('Done')
+        logging.info('Done downloading an excel file')
 
 
 COLUMN_RULE = {
@@ -48,5 +49,7 @@ df.rename(columns=COLUMN_RULE, inplace=True)
 df['id'] = df['code']
 df['updated_at']=datetime.now()
 df.set_index('id', inplace=True)
-
-df.to_sql('jpx2', DB_ENGINE, if_exists='replace')
+try:
+    df.to_sql('jpx2', DB_ENGINE, if_exists='replace')
+except Exception as e:
+    logging.error("error", exc_info=True)
