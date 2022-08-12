@@ -10,6 +10,7 @@ import logging
 ON_HEROKU = os.environ.get("ON_HEROKU", False)
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = DATABASE_URL.replace('postgres', 'postgresql')
 if not ON_HEROKU:
     dotenv_path = join(dirname(__file__), '.env')
     load_dotenv(dotenv_path)
